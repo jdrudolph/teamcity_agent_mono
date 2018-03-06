@@ -14,3 +14,9 @@ RUN echo "deb http://download.mono-project.com/repo/debian jessie/snapshots/$MON
   && apt-get update \
   && apt-get install -y binutils mono-devel ca-certificates-mono fsharp mono-vbnc nuget referenceassemblies-pcl \
   && rm -rf /var/lib/apt/lists/* /tmp/*
+
+# msbuild failed due to /etc/localtime not working.
+# solution from https://stackoverflow.com/questions/40234847/docker-timezone-in-ubuntu-16-04-image
+# and https://serverfault.com/questions/683605/docker-container-time-timezone-will-not-reflect-changes/
+ENV TZ=Europe/Berlin
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
